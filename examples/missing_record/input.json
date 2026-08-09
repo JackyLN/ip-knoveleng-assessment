@@ -1,0 +1,8 @@
+{
+  "feedback_text": "I was charged, but I cannot find my reservation.",
+  "guest_id": "GST-1002",
+  "guest_email": null,
+  "booking_id": "BKG-MISSING",
+  "property_id": null,
+  "channel": "email"
+}

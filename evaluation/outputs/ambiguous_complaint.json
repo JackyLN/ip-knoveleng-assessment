@@ -1,0 +1,302 @@
+{
+  "scenario_id": "ambiguous_complaint",
+  "passed": true,
+  "checks": {
+    "category_match": true,
+    "secondary_categories_match": true,
+    "required_tool_calls": true,
+    "expected_sources": true,
+    "source_id_validity": true,
+    "structured_output_validity": true,
+    "human_review_decision": true,
+    "missing_context_behaviour": true,
+    "unsupported_claim_detection": true,
+    "trace_completeness": true
+  },
+  "explanation": "The broad complaint is deliberately low confidence and requires clarification.",
+  "output": {
+    "report": {
+      "report_id": "RPT-22845a43-6751-417d-9af3-34113bcf5cb6",
+      "generated_at": "2026-08-07T03:05:10.031029Z",
+      "original_feedback": "My hotel experience was terrible.",
+      "feedback_summary": "My hotel experience was terrible.",
+      "primary_category": "hotel_service_complaint",
+      "secondary_categories": [],
+      "sentiment": "negative",
+      "urgency": "medium",
+      "business_impact": "medium",
+      "classification_confidence": 0.45,
+      "guest_context": {
+        "guest_id": "GST-1003",
+        "name": "Lina Voss",
+        "email": "lina.voss@example.com",
+        "loyalty_tier": "silver",
+        "account_created_at": "2023-07-19",
+        "region": "Germany",
+        "previous_stays": 4,
+        "previous_support_cases": 2,
+        "accessibility_requirements": [],
+        "flags": [
+          "service_recovery"
+        ]
+      },
+      "booking_context": [
+        {
+          "booking_id": "BKG-2003",
+          "guest_id": "GST-1003",
+          "property_id": "HTL-BER-01",
+          "room_type": "Twin",
+          "booking_status": "completed",
+          "check_in_date": "2026-07-02",
+          "check_out_date": "2026-07-05",
+          "number_of_guests": 2,
+          "booking_channel": "partner_agency",
+          "payment_status": "paid",
+          "total_amount": 465.0,
+          "currency": "EUR",
+          "cancellation_status": "not_cancelled",
+          "cancellation_source": null,
+          "refund_status": "not_requested",
+          "check_in_status": "checked_out",
+          "room_assignment": "207",
+          "created_at": "2026-03-20T09:15:00Z",
+          "updated_at": "2026-07-05T11:00:00Z"
+        }
+      ],
+      "property_context": {
+        "property_id": "HTL-BER-01",
+        "property_name": "StayFlow Linden Court",
+        "city": "Berlin",
+        "country": "Germany",
+        "property_status": "open",
+        "support_contact": "linden.support@example.com",
+        "check_in_time": "15:00",
+        "check_out_time": "11:00",
+        "amenities": [
+          "Wi-Fi",
+          "breakfast room"
+        ],
+        "active_incidents": [],
+        "operational_notes": [],
+        "accessibility_capabilities": [
+          "accessible lifts"
+        ]
+      },
+      "workflow_references": [
+        {
+          "source_id": "WF-SERVICE-01",
+          "title": "Hotel service recovery",
+          "version": null,
+          "reason_used": "Defines the support process and allowed recommendation for this category."
+        }
+      ],
+      "policy_references": [
+        {
+          "source_id": "POL-ROOM-01",
+          "title": "Room-quality remediation policy",
+          "version": "1.0",
+          "reason_used": "Provides applicable conditions, exclusions, and approval requirements."
+        }
+      ],
+      "suggested_actions": [
+        {
+          "action": "Assign a property support owner to review the service complaint.",
+          "priority": "medium",
+          "supporting_source_ids": [
+            "WF-SERVICE-01"
+          ],
+          "requires_approval": true
+        }
+      ],
+      "general_recommendations": [
+        "Acknowledge the guest's feedback."
+      ],
+      "missing_context": [],
+      "contradictions": [],
+      "context_complete": true,
+      "requires_human_review": true,
+      "human_review_reasons": [
+        "Classification is ambiguous.",
+        "Classification confidence is below 0.70."
+      ],
+      "report_status": "requires_review"
+    },
+    "trace": [
+      {
+        "event": "classification",
+        "tool_name": null,
+        "status": "success",
+        "result_summary": "Category hotel_service_complaint; confidence 0.45; urgency medium.",
+        "error_code": null
+      },
+      {
+        "event": "tool.requested",
+        "tool_name": "get_booking",
+        "status": "requested",
+        "result_summary": "Tool get_booking requested.",
+        "error_code": null
+      },
+      {
+        "event": "tool.validated",
+        "tool_name": "get_booking",
+        "status": "validated",
+        "result_summary": "Arguments matched the registered schema.",
+        "error_code": null
+      },
+      {
+        "event": "tool.started",
+        "tool_name": "get_booking",
+        "status": "started",
+        "result_summary": "Started get_booking.",
+        "error_code": null
+      },
+      {
+        "event": "tool.completed",
+        "tool_name": "get_booking",
+        "status": "completed",
+        "result_summary": "Found 1 booking record(s).",
+        "error_code": null
+      },
+      {
+        "event": "tool.requested",
+        "tool_name": "get_guest",
+        "status": "requested",
+        "result_summary": "Tool get_guest requested.",
+        "error_code": null
+      },
+      {
+        "event": "tool.validated",
+        "tool_name": "get_guest",
+        "status": "validated",
+        "result_summary": "Arguments matched the registered schema.",
+        "error_code": null
+      },
+      {
+        "event": "tool.started",
+        "tool_name": "get_guest",
+        "status": "started",
+        "result_summary": "Started get_guest.",
+        "error_code": null
+      },
+      {
+        "event": "tool.completed",
+        "tool_name": "get_guest",
+        "status": "completed",
+        "result_summary": "Found guest GST-1003.",
+        "error_code": null
+      },
+      {
+        "event": "tool.requested",
+        "tool_name": "get_policy",
+        "status": "requested",
+        "result_summary": "Tool get_policy requested.",
+        "error_code": null
+      },
+      {
+        "event": "tool.validated",
+        "tool_name": "get_policy",
+        "status": "validated",
+        "result_summary": "Arguments matched the registered schema.",
+        "error_code": null
+      },
+      {
+        "event": "tool.started",
+        "tool_name": "get_policy",
+        "status": "started",
+        "result_summary": "Started get_policy.",
+        "error_code": null
+      },
+      {
+        "event": "tool.completed",
+        "tool_name": "get_policy",
+        "status": "completed",
+        "result_summary": "Found 1 applicable policy record(s).",
+        "error_code": null
+      },
+      {
+        "event": "tool.requested",
+        "tool_name": "get_property",
+        "status": "requested",
+        "result_summary": "Tool get_property requested.",
+        "error_code": null
+      },
+      {
+        "event": "tool.validated",
+        "tool_name": "get_property",
+        "status": "validated",
+        "result_summary": "Arguments matched the registered schema.",
+        "error_code": null
+      },
+      {
+        "event": "tool.started",
+        "tool_name": "get_property",
+        "status": "started",
+        "result_summary": "Started get_property.",
+        "error_code": null
+      },
+      {
+        "event": "tool.completed",
+        "tool_name": "get_property",
+        "status": "completed",
+        "result_summary": "Found property HTL-BER-01.",
+        "error_code": null
+      },
+      {
+        "event": "tool.requested",
+        "tool_name": "get_workflow",
+        "status": "requested",
+        "result_summary": "Tool get_workflow requested.",
+        "error_code": null
+      },
+      {
+        "event": "tool.validated",
+        "tool_name": "get_workflow",
+        "status": "validated",
+        "result_summary": "Arguments matched the registered schema.",
+        "error_code": null
+      },
+      {
+        "event": "tool.started",
+        "tool_name": "get_workflow",
+        "status": "started",
+        "result_summary": "Started get_workflow.",
+        "error_code": null
+      },
+      {
+        "event": "tool.completed",
+        "tool_name": "get_workflow",
+        "status": "completed",
+        "result_summary": "Found workflow WF-SERVICE-01.",
+        "error_code": null
+      },
+      {
+        "event": "context.complete",
+        "tool_name": null,
+        "status": "complete",
+        "result_summary": "Required hotel context is available.",
+        "error_code": null
+      },
+      {
+        "event": "human_review",
+        "tool_name": null,
+        "status": "review_required",
+        "result_summary": "Review required for 2 reason(s).",
+        "error_code": null
+      },
+      {
+        "event": "report.requested",
+        "tool_name": null,
+        "status": "requested",
+        "result_summary": "Validated hotel context sent to report provider.",
+        "error_code": null
+      },
+      {
+        "event": "report.completed",
+        "tool_name": null,
+        "status": "completed",
+        "result_summary": "Hotel report generated and references validated.",
+        "error_code": null
+      }
+    ]
+  }
+}

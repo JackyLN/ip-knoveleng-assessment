@@ -1,0 +1,5 @@
+[
+  {"guest_id":"GST-1001","name":"Mara Ellison","email":"mara.ellison@example.com","loyalty_tier":"gold","account_created_at":"2022-04-12","region":"United Kingdom","previous_stays":8,"previous_support_cases":1,"accessibility_requirements":[],"flags":["vip"]},
+  {"guest_id":"GST-1002","name":"Noah Calder","email":"noah.calder@example.com","loyalty_tier":"member","account_created_at":"2024-01-08","region":"Canada","previous_stays":2,"previous_support_cases":0,"accessibility_requirements":["step-free access"],"flags":[]},
+  {"guest_id":"GST-1003","name":"Lina Voss","email":"lina.voss@example.com","loyalty_tier":"silver","account_created_at":"2023-07-19","region":"Germany","previous_stays":4,"previous_support_cases":2,"accessibility_requirements":[],"flags":["service_recovery"]}
+]

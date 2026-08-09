@@ -1,0 +1,312 @@
+{
+  "scenario_id": "overbooking",
+  "passed": true,
+  "checks": {
+    "category_match": true,
+    "secondary_categories_match": true,
+    "required_tool_calls": true,
+    "expected_sources": true,
+    "source_id_validity": true,
+    "structured_output_validity": true,
+    "human_review_decision": true,
+    "missing_context_behaviour": true,
+    "unsupported_claim_detection": true,
+    "trace_completeness": true
+  },
+  "explanation": "Arrival without a room is high-urgency overbooking and always escalates.",
+  "output": {
+    "report": {
+      "report_id": "RPT-0332c1f3-917c-460e-83d1-edf740e3f42a",
+      "generated_at": "2026-08-07T03:05:10.027891Z",
+      "original_feedback": "I arrived at the hotel with a confirmed booking, but reception said there was no room available.",
+      "feedback_summary": "I arrived at the hotel with a confirmed booking, but reception said there was no room available.",
+      "primary_category": "overbooking",
+      "secondary_categories": [
+        "booking_issue",
+        "room_issue",
+        "hotel_service_complaint"
+      ],
+      "sentiment": "neutral",
+      "urgency": "high",
+      "business_impact": "high",
+      "classification_confidence": 0.9,
+      "guest_context": {
+        "guest_id": "GST-1001",
+        "name": "Mara Ellison",
+        "email": "mara.ellison@example.com",
+        "loyalty_tier": "gold",
+        "account_created_at": "2022-04-12",
+        "region": "United Kingdom",
+        "previous_stays": 8,
+        "previous_support_cases": 1,
+        "accessibility_requirements": [],
+        "flags": [
+          "vip"
+        ]
+      },
+      "booking_context": [
+        {
+          "booking_id": "BKG-2006",
+          "guest_id": "GST-1001",
+          "property_id": "HTL-LON-01",
+          "room_type": "King",
+          "booking_status": "overbooked",
+          "check_in_date": "2026-08-06",
+          "check_out_date": "2026-08-08",
+          "number_of_guests": 2,
+          "booking_channel": "stayflow_web",
+          "payment_status": "paid",
+          "total_amount": 530.0,
+          "currency": "GBP",
+          "cancellation_status": "not_cancelled",
+          "cancellation_source": null,
+          "refund_status": "not_requested",
+          "check_in_status": "arrival_blocked",
+          "room_assignment": null,
+          "created_at": "2026-05-22T11:00:00Z",
+          "updated_at": "2026-08-06T18:40:00Z"
+        }
+      ],
+      "property_context": {
+        "property_id": "HTL-LON-01",
+        "property_name": "StayFlow Harbour House",
+        "city": "London",
+        "country": "United Kingdom",
+        "property_status": "open",
+        "support_contact": "harbour.support@example.com",
+        "check_in_time": "15:00",
+        "check_out_time": "11:00",
+        "amenities": [
+          "Wi-Fi",
+          "restaurant",
+          "fitness room"
+        ],
+        "active_incidents": [
+          "Limited king-room inventory on 2026-08-06"
+        ],
+        "operational_notes": [
+          "Escalate relocation decisions to duty manager"
+        ],
+        "accessibility_capabilities": [
+          "step-free entrance",
+          "accessible lifts"
+        ]
+      },
+      "workflow_references": [
+        {
+          "source_id": "WF-OVERBOOK-01",
+          "title": "Overbooking and relocation handling",
+          "version": null,
+          "reason_used": "Defines the support process and allowed recommendation for this category."
+        }
+      ],
+      "policy_references": [
+        {
+          "source_id": "POL-OVERBOOK-01",
+          "title": "Overbooking relocation and compensation policy",
+          "version": "1.0",
+          "reason_used": "Provides applicable conditions, exclusions, and approval requirements."
+        }
+      ],
+      "suggested_actions": [
+        {
+          "action": "Escalate immediately to the property duty manager for an approved relocation decision.",
+          "priority": "high",
+          "supporting_source_ids": [
+            "WF-OVERBOOK-01"
+          ],
+          "requires_approval": true
+        }
+      ],
+      "general_recommendations": [
+        "Acknowledge the guest's feedback."
+      ],
+      "missing_context": [],
+      "contradictions": [],
+      "context_complete": true,
+      "requires_human_review": true,
+      "human_review_reasons": [
+        "Overbooking requires mandatory escalation.",
+        "A financial or high-risk hotel action may be required."
+      ],
+      "report_status": "requires_review"
+    },
+    "trace": [
+      {
+        "event": "classification",
+        "tool_name": null,
+        "status": "success",
+        "result_summary": "Category overbooking; confidence 0.90; urgency high.",
+        "error_code": null
+      },
+      {
+        "event": "tool.requested",
+        "tool_name": "get_booking",
+        "status": "requested",
+        "result_summary": "Tool get_booking requested.",
+        "error_code": null
+      },
+      {
+        "event": "tool.validated",
+        "tool_name": "get_booking",
+        "status": "validated",
+        "result_summary": "Arguments matched the registered schema.",
+        "error_code": null
+      },
+      {
+        "event": "tool.started",
+        "tool_name": "get_booking",
+        "status": "started",
+        "result_summary": "Started get_booking.",
+        "error_code": null
+      },
+      {
+        "event": "tool.completed",
+        "tool_name": "get_booking",
+        "status": "completed",
+        "result_summary": "Found 1 booking record(s).",
+        "error_code": null
+      },
+      {
+        "event": "tool.requested",
+        "tool_name": "get_guest",
+        "status": "requested",
+        "result_summary": "Tool get_guest requested.",
+        "error_code": null
+      },
+      {
+        "event": "tool.validated",
+        "tool_name": "get_guest",
+        "status": "validated",
+        "result_summary": "Arguments matched the registered schema.",
+        "error_code": null
+      },
+      {
+        "event": "tool.started",
+        "tool_name": "get_guest",
+        "status": "started",
+        "result_summary": "Started get_guest.",
+        "error_code": null
+      },
+      {
+        "event": "tool.completed",
+        "tool_name": "get_guest",
+        "status": "completed",
+        "result_summary": "Found guest GST-1001.",
+        "error_code": null
+      },
+      {
+        "event": "tool.requested",
+        "tool_name": "get_policy",
+        "status": "requested",
+        "result_summary": "Tool get_policy requested.",
+        "error_code": null
+      },
+      {
+        "event": "tool.validated",
+        "tool_name": "get_policy",
+        "status": "validated",
+        "result_summary": "Arguments matched the registered schema.",
+        "error_code": null
+      },
+      {
+        "event": "tool.started",
+        "tool_name": "get_policy",
+        "status": "started",
+        "result_summary": "Started get_policy.",
+        "error_code": null
+      },
+      {
+        "event": "tool.completed",
+        "tool_name": "get_policy",
+        "status": "completed",
+        "result_summary": "Found 1 applicable policy record(s).",
+        "error_code": null
+      },
+      {
+        "event": "tool.requested",
+        "tool_name": "get_property",
+        "status": "requested",
+        "result_summary": "Tool get_property requested.",
+        "error_code": null
+      },
+      {
+        "event": "tool.validated",
+        "tool_name": "get_property",
+        "status": "validated",
+        "result_summary": "Arguments matched the registered schema.",
+        "error_code": null
+      },
+      {
+        "event": "tool.started",
+        "tool_name": "get_property",
+        "status": "started",
+        "result_summary": "Started get_property.",
+        "error_code": null
+      },
+      {
+        "event": "tool.completed",
+        "tool_name": "get_property",
+        "status": "completed",
+        "result_summary": "Found property HTL-LON-01.",
+        "error_code": null
+      },
+      {
+        "event": "tool.requested",
+        "tool_name": "get_workflow",
+        "status": "requested",
+        "result_summary": "Tool get_workflow requested.",
+        "error_code": null
+      },
+      {
+        "event": "tool.validated",
+        "tool_name": "get_workflow",
+        "status": "validated",
+        "result_summary": "Arguments matched the registered schema.",
+        "error_code": null
+      },
+      {
+        "event": "tool.started",
+        "tool_name": "get_workflow",
+        "status": "started",
+        "result_summary": "Started get_workflow.",
+        "error_code": null
+      },
+      {
+        "event": "tool.completed",
+        "tool_name": "get_workflow",
+        "status": "completed",
+        "result_summary": "Found workflow WF-OVERBOOK-01.",
+        "error_code": null
+      },
+      {
+        "event": "context.complete",
+        "tool_name": null,
+        "status": "complete",
+        "result_summary": "Required hotel context is available.",
+        "error_code": null
+      },
+      {
+        "event": "human_review",
+        "tool_name": null,
+        "status": "review_required",
+        "result_summary": "Review required for 2 reason(s).",
+        "error_code": null
+      },
+      {
+        "event": "report.requested",
+        "tool_name": null,
+        "status": "requested",
+        "result_summary": "Validated hotel context sent to report provider.",
+        "error_code": null
+      },
+      {
+        "event": "report.completed",
+        "tool_name": null,
+        "status": "completed",
+        "result_summary": "Hotel report generated and references validated.",
+        "error_code": null
+      }
+    ]
+  }
+}

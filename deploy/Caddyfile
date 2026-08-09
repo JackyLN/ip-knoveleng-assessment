@@ -1,0 +1,22 @@
+{$DOMAIN} {
+	encode zstd gzip
+
+	request_body {
+		max_size 32KB
+	}
+
+	basic_auth {
+		{$DEMO_USERNAME} {$DEMO_PASSWORD_HASH}
+	}
+
+	reverse_proxy app:8000 {
+		health_uri /health
+		health_interval 30s
+		health_timeout 3s
+	}
+
+	log {
+		output stdout
+		format json
+	}
+}

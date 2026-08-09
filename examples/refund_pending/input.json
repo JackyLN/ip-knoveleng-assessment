@@ -1,0 +1,8 @@
+{
+  "feedback_text": "The hotel cancelled my reservation last week, but I still have not received my refund.",
+  "guest_id": "GST-1003",
+  "guest_email": null,
+  "booking_id": "BKG-2005",
+  "property_id": "HTL-BER-01",
+  "channel": "email"
+}

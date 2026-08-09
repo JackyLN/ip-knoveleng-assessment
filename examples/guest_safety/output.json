@@ -1,0 +1,659 @@
+{
+  "input": {
+    "feedback_text": "The room door would not lock and the hotel staff did not move us to another room.",
+    "guest_id": "GST-1002",
+    "guest_email": null,
+    "booking_id": "BKG-2002",
+    "property_id": "HTL-TOR-01",
+    "channel": "phone"
+  },
+  "classification": {
+    "primary_category": "guest_safety",
+    "secondary_categories": [
+      "room_issue",
+      "hotel_service_complaint"
+    ],
+    "sentiment": "negative",
+    "urgency": "critical",
+    "business_impact": "critical",
+    "classification_confidence": 0.8400000000000001
+  },
+  "tool_calls": [
+    {
+      "tool_name": "get_booking",
+      "sanitized_arguments": {
+        "booking_id": "BKG-2002",
+        "guest_id": "GST-1002"
+      },
+      "status": "completed",
+      "result_summary": "Found 1 booking record(s)."
+    },
+    {
+      "tool_name": "get_guest",
+      "sanitized_arguments": {
+        "guest_id": "GST-1002",
+        "guest_email": null
+      },
+      "status": "completed",
+      "result_summary": "Found guest GST-1002."
+    },
+    {
+      "tool_name": "get_policy",
+      "sanitized_arguments": {
+        "category": "guest_safety",
+        "property_country": null,
+        "booking_channel": null
+      },
+      "status": "completed",
+      "result_summary": "Found 1 applicable policy record(s)."
+    },
+    {
+      "tool_name": "get_property",
+      "sanitized_arguments": {
+        "property_id": "HTL-TOR-01"
+      },
+      "status": "completed",
+      "result_summary": "Found property HTL-TOR-01."
+    },
+    {
+      "tool_name": "get_workflow",
+      "sanitized_arguments": {
+        "category": "guest_safety"
+      },
+      "status": "completed",
+      "result_summary": "Found workflow WF-SAFETY-01."
+    }
+  ],
+  "retrieved_context": {
+    "guest": {
+      "guest_id": "GST-1002",
+      "name": "Noah Calder",
+      "email": "noah.calder@example.com",
+      "loyalty_tier": "member",
+      "account_created_at": "2024-01-08",
+      "region": "Canada",
+      "previous_stays": 2,
+      "previous_support_cases": 0,
+      "accessibility_requirements": [
+        "step-free access"
+      ],
+      "flags": []
+    },
+    "bookings": [
+      {
+        "booking_id": "BKG-2002",
+        "guest_id": "GST-1002",
+        "property_id": "HTL-TOR-01",
+        "room_type": "Accessible Queen",
+        "booking_status": "active_stay",
+        "check_in_date": "2026-08-05",
+        "check_out_date": "2026-08-08",
+        "number_of_guests": 1,
+        "booking_channel": "stayflow_web",
+        "payment_status": "paid",
+        "total_amount": 540.0,
+        "currency": "CAD",
+        "cancellation_status": "not_cancelled",
+        "cancellation_source": null,
+        "refund_status": "not_requested",
+        "check_in_status": "checked_in",
+        "room_assignment": "418",
+        "created_at": "2026-06-14T15:30:00Z",
+        "updated_at": "2026-08-05T19:05:00Z"
+      }
+    ],
+    "property": {
+      "property_id": "HTL-TOR-01",
+      "property_name": "StayFlow Cedar Quay",
+      "city": "Toronto",
+      "country": "Canada",
+      "property_status": "open",
+      "support_contact": "cedar.support@example.com",
+      "check_in_time": "16:00",
+      "check_out_time": "11:00",
+      "amenities": [
+        "Wi-Fi",
+        "pool",
+        "restaurant"
+      ],
+      "active_incidents": [],
+      "operational_notes": [
+        "Night manager available after 22:00"
+      ],
+      "accessibility_capabilities": [
+        "step-free entrance",
+        "accessible rooms",
+        "visual fire alarms"
+      ]
+    },
+    "workflows": [
+      {
+        "source_id": "WF-SAFETY-01",
+        "title": "Guest-safety escalation",
+        "version": null,
+        "reason_used": "Defines the support process and allowed recommendation for this category."
+      }
+    ],
+    "policies": [
+      {
+        "source_id": "POL-SAFETY-01",
+        "title": "Guest-safety escalation policy",
+        "version": "1.0",
+        "reason_used": "Provides applicable conditions, exclusions, and approval requirements."
+      }
+    ]
+  },
+  "hotel_feedback_report": {
+    "report_id": "RPT-3b34b888-fc2a-49b5-b27f-7d525f6f5dcd",
+    "generated_at": "2026-08-07T03:05:10.275169Z",
+    "original_feedback": "The room door would not lock and the hotel staff did not move us to another room.",
+    "feedback_summary": "The room door would not lock and the hotel staff did not move us to another room.",
+    "primary_category": "guest_safety",
+    "secondary_categories": [
+      "room_issue",
+      "hotel_service_complaint"
+    ],
+    "sentiment": "negative",
+    "urgency": "critical",
+    "business_impact": "critical",
+    "classification_confidence": 0.8400000000000001,
+    "guest_context": {
+      "guest_id": "GST-1002",
+      "name": "Noah Calder",
+      "email": "noah.calder@example.com",
+      "loyalty_tier": "member",
+      "account_created_at": "2024-01-08",
+      "region": "Canada",
+      "previous_stays": 2,
+      "previous_support_cases": 0,
+      "accessibility_requirements": [
+        "step-free access"
+      ],
+      "flags": []
+    },
+    "booking_context": [
+      {
+        "booking_id": "BKG-2002",
+        "guest_id": "GST-1002",
+        "property_id": "HTL-TOR-01",
+        "room_type": "Accessible Queen",
+        "booking_status": "active_stay",
+        "check_in_date": "2026-08-05",
+        "check_out_date": "2026-08-08",
+        "number_of_guests": 1,
+        "booking_channel": "stayflow_web",
+        "payment_status": "paid",
+        "total_amount": 540.0,
+        "currency": "CAD",
+        "cancellation_status": "not_cancelled",
+        "cancellation_source": null,
+        "refund_status": "not_requested",
+        "check_in_status": "checked_in",
+        "room_assignment": "418",
+        "created_at": "2026-06-14T15:30:00Z",
+        "updated_at": "2026-08-05T19:05:00Z"
+      }
+    ],
+    "property_context": {
+      "property_id": "HTL-TOR-01",
+      "property_name": "StayFlow Cedar Quay",
+      "city": "Toronto",
+      "country": "Canada",
+      "property_status": "open",
+      "support_contact": "cedar.support@example.com",
+      "check_in_time": "16:00",
+      "check_out_time": "11:00",
+      "amenities": [
+        "Wi-Fi",
+        "pool",
+        "restaurant"
+      ],
+      "active_incidents": [],
+      "operational_notes": [
+        "Night manager available after 22:00"
+      ],
+      "accessibility_capabilities": [
+        "step-free entrance",
+        "accessible rooms",
+        "visual fire alarms"
+      ]
+    },
+    "workflow_references": [
+      {
+        "source_id": "WF-SAFETY-01",
+        "title": "Guest-safety escalation",
+        "version": null,
+        "reason_used": "Defines the support process and allowed recommendation for this category."
+      }
+    ],
+    "policy_references": [
+      {
+        "source_id": "POL-SAFETY-01",
+        "title": "Guest-safety escalation policy",
+        "version": "1.0",
+        "reason_used": "Provides applicable conditions, exclusions, and approval requirements."
+      }
+    ],
+    "suggested_actions": [
+      {
+        "action": "Escalate immediately to the property duty manager and safety contact.",
+        "priority": "critical",
+        "supporting_source_ids": [
+          "WF-SAFETY-01"
+        ],
+        "requires_approval": true
+      }
+    ],
+    "general_recommendations": [
+      "Acknowledge the guest's feedback."
+    ],
+    "missing_context": [],
+    "contradictions": [],
+    "context_complete": true,
+    "requires_human_review": true,
+    "human_review_reasons": [
+      "Guest safety requires mandatory escalation.",
+      "A financial or high-risk hotel action may be required.",
+      "Sensitive issue detected: security."
+    ],
+    "report_status": "requires_review"
+  },
+  "human_review_decision": {
+    "required": true,
+    "reasons": [
+      "Guest safety requires mandatory escalation.",
+      "A financial or high-risk hotel action may be required.",
+      "Sensitive issue detected: security."
+    ]
+  },
+  "execution_trace": [
+    {
+      "timestamp": "2026-08-07T03:05:10.274020Z",
+      "request_id": "EXAMPLE-GUEST_SAFETY",
+      "event": "classification",
+      "step": "classification",
+      "action": "Classify untrusted guest feedback with structured output",
+      "tool_name": null,
+      "inputs": {
+        "text_length": 81,
+        "channel": "phone"
+      },
+      "status": "success",
+      "result_summary": "Category guest_safety; confidence 0.84; urgency critical.",
+      "duration_ms": null,
+      "error_code": null
+    },
+    {
+      "timestamp": "2026-08-07T03:05:10.274048Z",
+      "request_id": "EXAMPLE-GUEST_SAFETY",
+      "event": "tool.requested",
+      "step": "tool_call",
+      "action": "Model requested lookup",
+      "tool_name": "get_booking",
+      "inputs": {
+        "booking_id": "BKG-2002",
+        "guest_id": "GST-1002"
+      },
+      "status": "requested",
+      "result_summary": "Tool get_booking requested.",
+      "duration_ms": null,
+      "error_code": null
+    },
+    {
+      "timestamp": "2026-08-07T03:05:10.274059Z",
+      "request_id": "EXAMPLE-GUEST_SAFETY",
+      "event": "tool.validated",
+      "step": "tool_call",
+      "action": "Validate tool arguments",
+      "tool_name": "get_booking",
+      "inputs": {
+        "booking_id": "BKG-2002",
+        "guest_id": "GST-1002"
+      },
+      "status": "validated",
+      "result_summary": "Arguments matched the registered schema.",
+      "duration_ms": null,
+      "error_code": null
+    },
+    {
+      "timestamp": "2026-08-07T03:05:10.274062Z",
+      "request_id": "EXAMPLE-GUEST_SAFETY",
+      "event": "tool.started",
+      "step": "tool_call",
+      "action": "Execute registered JSON retrieval tool",
+      "tool_name": "get_booking",
+      "inputs": {
+        "booking_id": "BKG-2002",
+        "guest_id": "GST-1002"
+      },
+      "status": "started",
+      "result_summary": "Started get_booking.",
+      "duration_ms": null,
+      "error_code": null
+    },
+    {
+      "timestamp": "2026-08-07T03:05:10.274199Z",
+      "request_id": "EXAMPLE-GUEST_SAFETY",
+      "event": "tool.completed",
+      "step": "tool_call",
+      "action": "Execute registered JSON retrieval tool",
+      "tool_name": "get_booking",
+      "inputs": {
+        "booking_id": "BKG-2002",
+        "guest_id": "GST-1002"
+      },
+      "status": "completed",
+      "result_summary": "Found 1 booking record(s).",
+      "duration_ms": 0.13520900392904878,
+      "error_code": null
+    },
+    {
+      "timestamp": "2026-08-07T03:05:10.274217Z",
+      "request_id": "EXAMPLE-GUEST_SAFETY",
+      "event": "tool.requested",
+      "step": "tool_call",
+      "action": "Model requested lookup",
+      "tool_name": "get_guest",
+      "inputs": {
+        "guest_id": "GST-1002",
+        "guest_email": null
+      },
+      "status": "requested",
+      "result_summary": "Tool get_guest requested.",
+      "duration_ms": null,
+      "error_code": null
+    },
+    {
+      "timestamp": "2026-08-07T03:05:10.274228Z",
+      "request_id": "EXAMPLE-GUEST_SAFETY",
+      "event": "tool.validated",
+      "step": "tool_call",
+      "action": "Validate tool arguments",
+      "tool_name": "get_guest",
+      "inputs": {
+        "guest_id": "GST-1002",
+        "guest_email": null
+      },
+      "status": "validated",
+      "result_summary": "Arguments matched the registered schema.",
+      "duration_ms": null,
+      "error_code": null
+    },
+    {
+      "timestamp": "2026-08-07T03:05:10.274231Z",
+      "request_id": "EXAMPLE-GUEST_SAFETY",
+      "event": "tool.started",
+      "step": "tool_call",
+      "action": "Execute registered JSON retrieval tool",
+      "tool_name": "get_guest",
+      "inputs": {
+        "guest_id": "GST-1002",
+        "guest_email": null
+      },
+      "status": "started",
+      "result_summary": "Started get_guest.",
+      "duration_ms": null,
+      "error_code": null
+    },
+    {
+      "timestamp": "2026-08-07T03:05:10.274460Z",
+      "request_id": "EXAMPLE-GUEST_SAFETY",
+      "event": "tool.completed",
+      "step": "tool_call",
+      "action": "Execute registered JSON retrieval tool",
+      "tool_name": "get_guest",
+      "inputs": {
+        "guest_id": "GST-1002",
+        "guest_email": null
+      },
+      "status": "completed",
+      "result_summary": "Found guest GST-1002.",
+      "duration_ms": 0.22733400692231953,
+      "error_code": null
+    },
+    {
+      "timestamp": "2026-08-07T03:05:10.274474Z",
+      "request_id": "EXAMPLE-GUEST_SAFETY",
+      "event": "tool.requested",
+      "step": "tool_call",
+      "action": "Model requested lookup",
+      "tool_name": "get_policy",
+      "inputs": {
+        "category": "guest_safety",
+        "property_country": null,
+        "booking_channel": null
+      },
+      "status": "requested",
+      "result_summary": "Tool get_policy requested.",
+      "duration_ms": null,
+      "error_code": null
+    },
+    {
+      "timestamp": "2026-08-07T03:05:10.274487Z",
+      "request_id": "EXAMPLE-GUEST_SAFETY",
+      "event": "tool.validated",
+      "step": "tool_call",
+      "action": "Validate tool arguments",
+      "tool_name": "get_policy",
+      "inputs": {
+        "category": "guest_safety",
+        "property_country": null,
+        "booking_channel": null
+      },
+      "status": "validated",
+      "result_summary": "Arguments matched the registered schema.",
+      "duration_ms": null,
+      "error_code": null
+    },
+    {
+      "timestamp": "2026-08-07T03:05:10.274489Z",
+      "request_id": "EXAMPLE-GUEST_SAFETY",
+      "event": "tool.started",
+      "step": "tool_call",
+      "action": "Execute registered JSON retrieval tool",
+      "tool_name": "get_policy",
+      "inputs": {
+        "category": "guest_safety",
+        "property_country": null,
+        "booking_channel": null
+      },
+      "status": "started",
+      "result_summary": "Started get_policy.",
+      "duration_ms": null,
+      "error_code": null
+    },
+    {
+      "timestamp": "2026-08-07T03:05:10.274617Z",
+      "request_id": "EXAMPLE-GUEST_SAFETY",
+      "event": "tool.completed",
+      "step": "tool_call",
+      "action": "Execute registered JSON retrieval tool",
+      "tool_name": "get_policy",
+      "inputs": {
+        "category": "guest_safety",
+        "property_country": null,
+        "booking_channel": null
+      },
+      "status": "completed",
+      "result_summary": "Found 1 applicable policy record(s).",
+      "duration_ms": 0.12558299931697547,
+      "error_code": null
+    },
+    {
+      "timestamp": "2026-08-07T03:05:10.274630Z",
+      "request_id": "EXAMPLE-GUEST_SAFETY",
+      "event": "tool.requested",
+      "step": "tool_call",
+      "action": "Model requested lookup",
+      "tool_name": "get_property",
+      "inputs": {
+        "property_id": "HTL-TOR-01"
+      },
+      "status": "requested",
+      "result_summary": "Tool get_property requested.",
+      "duration_ms": null,
+      "error_code": null
+    },
+    {
+      "timestamp": "2026-08-07T03:05:10.274639Z",
+      "request_id": "EXAMPLE-GUEST_SAFETY",
+      "event": "tool.validated",
+      "step": "tool_call",
+      "action": "Validate tool arguments",
+      "tool_name": "get_property",
+      "inputs": {
+        "property_id": "HTL-TOR-01"
+      },
+      "status": "validated",
+      "result_summary": "Arguments matched the registered schema.",
+      "duration_ms": null,
+      "error_code": null
+    },
+    {
+      "timestamp": "2026-08-07T03:05:10.274641Z",
+      "request_id": "EXAMPLE-GUEST_SAFETY",
+      "event": "tool.started",
+      "step": "tool_call",
+      "action": "Execute registered JSON retrieval tool",
+      "tool_name": "get_property",
+      "inputs": {
+        "property_id": "HTL-TOR-01"
+      },
+      "status": "started",
+      "result_summary": "Started get_property.",
+      "duration_ms": null,
+      "error_code": null
+    },
+    {
+      "timestamp": "2026-08-07T03:05:10.274873Z",
+      "request_id": "EXAMPLE-GUEST_SAFETY",
+      "event": "tool.completed",
+      "step": "tool_call",
+      "action": "Execute registered JSON retrieval tool",
+      "tool_name": "get_property",
+      "inputs": {
+        "property_id": "HTL-TOR-01"
+      },
+      "status": "completed",
+      "result_summary": "Found property HTL-TOR-01.",
+      "duration_ms": 0.22924999939277768,
+      "error_code": null
+    },
+    {
+      "timestamp": "2026-08-07T03:05:10.274886Z",
+      "request_id": "EXAMPLE-GUEST_SAFETY",
+      "event": "tool.requested",
+      "step": "tool_call",
+      "action": "Model requested lookup",
+      "tool_name": "get_workflow",
+      "inputs": {
+        "category": "guest_safety"
+      },
+      "status": "requested",
+      "result_summary": "Tool get_workflow requested.",
+      "duration_ms": null,
+      "error_code": null
+    },
+    {
+      "timestamp": "2026-08-07T03:05:10.274896Z",
+      "request_id": "EXAMPLE-GUEST_SAFETY",
+      "event": "tool.validated",
+      "step": "tool_call",
+      "action": "Validate tool arguments",
+      "tool_name": "get_workflow",
+      "inputs": {
+        "category": "guest_safety"
+      },
+      "status": "validated",
+      "result_summary": "Arguments matched the registered schema.",
+      "duration_ms": null,
+      "error_code": null
+    },
+    {
+      "timestamp": "2026-08-07T03:05:10.274898Z",
+      "request_id": "EXAMPLE-GUEST_SAFETY",
+      "event": "tool.started",
+      "step": "tool_call",
+      "action": "Execute registered JSON retrieval tool",
+      "tool_name": "get_workflow",
+      "inputs": {
+        "category": "guest_safety"
+      },
+      "status": "started",
+      "result_summary": "Started get_workflow.",
+      "duration_ms": null,
+      "error_code": null
+    },
+    {
+      "timestamp": "2026-08-07T03:05:10.275039Z",
+      "request_id": "EXAMPLE-GUEST_SAFETY",
+      "event": "tool.completed",
+      "step": "tool_call",
+      "action": "Execute registered JSON retrieval tool",
+      "tool_name": "get_workflow",
+      "inputs": {
+        "category": "guest_safety"
+      },
+      "status": "completed",
+      "result_summary": "Found workflow WF-SAFETY-01.",
+      "duration_ms": 0.13879098696634173,
+      "error_code": null
+    },
+    {
+      "timestamp": "2026-08-07T03:05:10.275054Z",
+      "request_id": "EXAMPLE-GUEST_SAFETY",
+      "event": "context.complete",
+      "step": "context",
+      "action": "Verify category-specific hotel context",
+      "tool_name": null,
+      "inputs": {},
+      "status": "complete",
+      "result_summary": "Required hotel context is available.",
+      "duration_ms": null,
+      "error_code": null
+    },
+    {
+      "timestamp": "2026-08-07T03:05:10.275064Z",
+      "request_id": "EXAMPLE-GUEST_SAFETY",
+      "event": "human_review",
+      "step": "human_review",
+      "action": "Apply deterministic review rules",
+      "tool_name": null,
+      "inputs": {},
+      "status": "review_required",
+      "result_summary": "Review required for 3 reason(s).",
+      "duration_ms": null,
+      "error_code": null
+    },
+    {
+      "timestamp": "2026-08-07T03:05:10.275067Z",
+      "request_id": "EXAMPLE-GUEST_SAFETY",
+      "event": "report.requested",
+      "step": "report_generation",
+      "action": "Request grounded StayFlow report",
+      "tool_name": null,
+      "inputs": {
+        "provider": "mock"
+      },
+      "status": "requested",
+      "result_summary": "Validated hotel context sent to report provider.",
+      "duration_ms": null,
+      "error_code": null
+    },
+    {
+      "timestamp": "2026-08-07T03:05:10.275175Z",
+      "request_id": "EXAMPLE-GUEST_SAFETY",
+      "event": "report.completed",
+      "step": "report_generation",
+      "action": "Validate grounded StayFlow report",
+      "tool_name": null,
+      "inputs": {
+        "provider": "mock"
+      },
+      "status": "completed",
+      "result_summary": "Hotel report generated and references validated.",
+      "duration_ms": 0.10804101475514472,
+      "error_code": null
+    }
+  ]
+}
