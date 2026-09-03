@@ -87,6 +87,24 @@ docker compose -f docker-compose.prod.yml restart app
 
 Use `docker compose down` without `-v`; deleting volumes removes Caddy certificate state. Back up `.env.production` and `.env.caddy` through an encrypted secret-management process, not source control.
 
-## CI and deployment boundary
+## CI/CD
 
-Pull requests and `main` validate dependencies, lint, types, tests, evaluation, and the production image. Setting repository variable `ENABLE_REGISTRY_PUSH=true` enables the optional immutable GHCR push on `main`. CI intentionally does not SSH into the VPS: deployment remains an explicit operator action documented above.
+Pull requests and `main` validate dependencies, lint, types, tests, evaluation, and the production image. Setting repository variable `ENABLE_REGISTRY_PUSH=true` enables the optional immutable GHCR push on `main`.
+
+After CI succeeds for a push to `main`, `.github/workflows/cd.yml` deploys that exact commit to `/opt/stayflow`. It may also be started manually from the Actions page. Create a GitHub environment named `production` and configure:
+
+Repository/environment variable:
+
+- `DEPLOYMENT_URL=https://knoveleng.demo.jackylenghia.com`
+
+Environment secrets:
+
+- `VPS_HOST` — `187.127.220.131`
+- `VPS_USER` — the SSH deployment user
+- `VPS_SSH_PRIVATE_KEY` — its private SSH key
+- `VPS_KNOWN_HOSTS` — the pinned output of `ssh-keyscan -H 187.127.220.131`, verified against the server fingerprint
+- `DEMO_USERNAME` and `DEMO_PASSWORD` — Caddy Basic Auth credentials used only for HTTPS smoke tests
+
+The server must have Docker Compose and `rsync`, and the deployment user must be able to write `/opt/stayflow` and run Docker. Provision `.env.production` and `.env.caddy` once on the server; CD explicitly preserves both and never transfers them through GitHub Actions.
+
+Each deployment validates Compose, rebuilds the app image, recreates changed services, waits for application health, checks public `/health` and `/docs` over HTTPS, and records the successful commit in `/opt/stayflow/.deployed-sha`. The workflow uses a concurrency lock so deployments cannot overlap. Optional environment protection rules can require approval before the `production` job starts.

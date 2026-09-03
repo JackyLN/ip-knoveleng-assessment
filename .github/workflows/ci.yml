@@ -21,9 +21,9 @@ jobs:
       - name: Verify locked dependencies
         run: uv sync --python 3.12 --all-extras --locked
       - name: Lint
-        run: uv run ruff check app tests evaluation
+        run: uv run ruff check app tests evaluation examples
       - name: Type check
-        run: uv run mypy app evaluation
+        run: uv run mypy app evaluation examples
       - name: Test
         run: uv run pytest
       - name: Evaluate

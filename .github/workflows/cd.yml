@@ -1,0 +1,116 @@
+name: CD
+
+on:
+  workflow_run:
+    workflows: [CI]
+    types: [completed]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: stayflow-production
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    if: >-
+      github.event_name == 'workflow_dispatch' ||
+      (github.event.workflow_run.event == 'push' &&
+      github.event.workflow_run.head_branch == 'main' &&
+      github.event.workflow_run.conclusion == 'success')
+    runs-on: ubuntu-latest
+    environment: production
+    steps:
+      - name: Check out the validated revision
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.workflow_run.head_sha || github.sha }}
+
+      - name: Configure SSH
+        env:
+          VPS_SSH_PRIVATE_KEY: ${{ secrets.VPS_SSH_PRIVATE_KEY }}
+          VPS_KNOWN_HOSTS: ${{ secrets.VPS_KNOWN_HOSTS }}
+        run: |
+          test -n "$VPS_SSH_PRIVATE_KEY"
+          test -n "$VPS_KNOWN_HOSTS"
+          install -d -m 700 "$HOME/.ssh"
+          printf '%s\n' "$VPS_SSH_PRIVATE_KEY" > "$HOME/.ssh/id_ed25519"
+          printf '%s\n' "$VPS_KNOWN_HOSTS" > "$HOME/.ssh/known_hosts"
+          chmod 600 "$HOME/.ssh/id_ed25519" "$HOME/.ssh/known_hosts"
+
+      - name: Verify deployment configuration
+        env:
+          VPS_HOST: ${{ secrets.VPS_HOST }}
+          VPS_USER: ${{ secrets.VPS_USER }}
+          DEPLOYMENT_URL: ${{ vars.DEPLOYMENT_URL }}
+          DEMO_USERNAME: ${{ secrets.DEMO_USERNAME }}
+          DEMO_PASSWORD: ${{ secrets.DEMO_PASSWORD }}
+        run: |
+          test -n "$VPS_HOST"
+          test -n "$VPS_USER"
+          test -n "$DEPLOYMENT_URL"
+          test -n "$DEMO_USERNAME"
+          test -n "$DEMO_PASSWORD"
+
+      - name: Synchronize application source
+        env:
+          VPS_HOST: ${{ secrets.VPS_HOST }}
+          VPS_USER: ${{ secrets.VPS_USER }}
+        run: |
+          ssh "$VPS_USER@$VPS_HOST" "install -d -m 750 /opt/stayflow"
+          rsync -az --delete \
+            --exclude='.git/' \
+            --exclude='.env' \
+            --exclude='.env.production' \
+            --exclude='.env.caddy' \
+            ./ "$VPS_USER@$VPS_HOST:/opt/stayflow/"
+
+      - name: Build and restart StayFlow
+        env:
+          VPS_HOST: ${{ secrets.VPS_HOST }}
+          VPS_USER: ${{ secrets.VPS_USER }}
+          DEPLOYED_SHA: ${{ github.event.workflow_run.head_sha || github.sha }}
+        run: |
+          ssh "$VPS_USER@$VPS_HOST" bash -s -- "$DEPLOYED_SHA" <<'REMOTE'
+          set -euo pipefail
+          DEPLOYED_SHA=$1
+          cd /opt/stayflow
+          test -s .env.production
+          test -s .env.caddy
+          docker compose -f docker-compose.prod.yml config --quiet
+          docker compose -f docker-compose.prod.yml build --pull app
+          docker compose -f docker-compose.prod.yml up -d --remove-orphans
+          for attempt in $(seq 1 30); do
+            state=$(docker inspect -f '{{if .State.Health}}{{.State.Health.Status}}{{else}}{{.State.Status}}{{end}}' stayflow-app-1 2>/dev/null || true)
+            if [ "$state" = "healthy" ]; then
+              printf '%s\n' "$DEPLOYED_SHA" > .deployed-sha
+              exit 0
+            fi
+            sleep 2
+          done
+          docker compose -f docker-compose.prod.yml ps
+          docker compose -f docker-compose.prod.yml logs --tail=100 app
+          exit 1
+          REMOTE
+
+      - name: Verify public HTTPS
+        env:
+          DEPLOYMENT_URL: ${{ vars.DEPLOYMENT_URL }}
+          DEMO_USERNAME: ${{ secrets.DEMO_USERNAME }}
+          DEMO_PASSWORD: ${{ secrets.DEMO_PASSWORD }}
+        run: |
+          curl --fail --silent --show-error \
+            --retry 5 --retry-delay 3 --retry-all-errors \
+            --user "$DEMO_USERNAME:$DEMO_PASSWORD" \
+            "$DEPLOYMENT_URL/health" | grep -q '"status":"ok"'
+          curl --fail --silent --show-error \
+            --user "$DEMO_USERNAME:$DEMO_PASSWORD" \
+            "$DEPLOYMENT_URL/docs" > /dev/null
+
+      - name: Show deployment status
+        env:
+          VPS_HOST: ${{ secrets.VPS_HOST }}
+          VPS_USER: ${{ secrets.VPS_USER }}
+        run: ssh "$VPS_USER@$VPS_HOST" 'cd /opt/stayflow && docker compose -f docker-compose.prod.yml ps'
