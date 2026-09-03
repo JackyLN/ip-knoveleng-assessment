@@ -116,6 +116,10 @@ Each folder contains `input.json`, `output.json`, and a short reproduction note.
 
 For end-user steps see [USER_WORKFLOW.md](USER_WORKFLOW.md). For the protected Ubuntu/Caddy stack see [DEPLOYMENT.md](DEPLOYMENT.md).
 
+## Screenshots
+
+See the [four-screen walkthrough](docs/screenshots/README.md) for the populated feedback form, grounded report, human-review trace, and Swagger API documentation.
+
 ## Limitations
 
 - All people, properties, bookings, workflows, and policies are fictional local fixtures.
