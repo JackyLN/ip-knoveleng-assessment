@@ -38,14 +38,10 @@ jobs:
           VPS_HOST: ${{ secrets.VPS_HOST }}
           VPS_USER: ${{ secrets.VPS_USER }}
           DEPLOYMENT_URL: ${{ vars.DEPLOYMENT_URL }}
-          DEMO_USERNAME: ${{ secrets.DEMO_USERNAME }}
-          DEMO_PASSWORD: ${{ secrets.DEMO_PASSWORD }}
         run: |
           test -n "$VPS_HOST"
           test -n "$VPS_USER"
           test -n "$DEPLOYMENT_URL"
-          test -n "$DEMO_USERNAME"
-          test -n "$DEMO_PASSWORD"
 
       - name: Synchronize application source
         env:
@@ -91,16 +87,12 @@ jobs:
       - name: Verify public HTTPS
         env:
           DEPLOYMENT_URL: ${{ vars.DEPLOYMENT_URL }}
-          DEMO_USERNAME: ${{ secrets.DEMO_USERNAME }}
-          DEMO_PASSWORD: ${{ secrets.DEMO_PASSWORD }}
         run: |
-          curl --fail --silent --show-error \
+          HTTP_STATUS=$(curl --silent --show-error \
             --retry 5 --retry-delay 3 --retry-all-errors \
-            --user "$DEMO_USERNAME:$DEMO_PASSWORD" \
-            "$DEPLOYMENT_URL/health" | grep -q '"status":"ok"'
-          curl --fail --silent --show-error \
-            --user "$DEMO_USERNAME:$DEMO_PASSWORD" \
-            "$DEPLOYMENT_URL/docs" > /dev/null
+            --output /dev/null --write-out '%{http_code}' \
+            "$DEPLOYMENT_URL/health")
+          test "$HTTP_STATUS" = "401"
 
       - name: Show deployment status
         env:

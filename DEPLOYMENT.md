@@ -105,10 +105,9 @@ Environment secrets:
 - `VPS_USER` — the SSH deployment user
 - `VPS_SSH_PRIVATE_KEY` — its private SSH key
 - `VPS_KNOWN_HOSTS` — the pinned output of `ssh-keyscan -H 187.127.220.131`, verified against the server fingerprint
-- `DEMO_USERNAME` and `DEMO_PASSWORD` — Caddy Basic Auth credentials used only for HTTPS smoke tests
 
 The server must have Docker Compose and `rsync`, and the deployment user must be able to write `/opt/stayflow` and run Docker. Provision `.env.production` and `.env.caddy` once on the server; CD explicitly preserves both and never transfers them through GitHub Actions.
 
 For defense in depth, configure the `production` environment with `JackyLN` as a required reviewer. If your repository has other administrators, disable administrator bypass where GitHub offers that setting. Do not enable “prevent self-review” when you are the only permitted deployer, because that would prevent you from approving your own deployment.
 
-Each deployment validates Compose, rebuilds the app image, recreates changed services, waits for application health, checks public `/health` and `/docs` over HTTPS, and records the successful commit in `/opt/stayflow/.deployed-sha`. The workflow uses a concurrency lock so deployments cannot overlap.
+Each deployment validates Compose, rebuilds the app image, recreates changed services, and waits for the application's internal health check. It then requires an unauthenticated public `/health` request to return `401`, confirming DNS, HTTPS, Caddy, and access protection without storing demo credentials in GitHub. A successful deployment is recorded in `/opt/stayflow/.deployed-sha`. The workflow uses a concurrency lock so deployments cannot overlap.
