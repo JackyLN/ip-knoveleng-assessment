@@ -91,7 +91,9 @@ Use `docker compose down` without `-v`; deleting volumes removes Caddy certifica
 
 Pull requests and `main` validate dependencies, lint, types, tests, evaluation, and the production image. Setting repository variable `ENABLE_REGISTRY_PUSH=true` enables the optional immutable GHCR push on `main`.
 
-After CI succeeds for a push to `main`, `.github/workflows/cd.yml` deploys that exact commit to `/opt/stayflow`. It may also be started manually from the Actions page. Create a GitHub environment named `production` and configure:
+`.github/workflows/cd.yml` is manual-only. To deploy, open **Actions → CD → Run workflow** and select `main`. The deploy job has an explicit `github.actor == 'JackyLN'` guard; GitHub also limits manual workflow dispatch to users with repository write access. Public visitors with read access cannot trigger it.
+
+Create a GitHub environment named `production` and configure:
 
 Repository/environment variable:
 
@@ -107,4 +109,6 @@ Environment secrets:
 
 The server must have Docker Compose and `rsync`, and the deployment user must be able to write `/opt/stayflow` and run Docker. Provision `.env.production` and `.env.caddy` once on the server; CD explicitly preserves both and never transfers them through GitHub Actions.
 
-Each deployment validates Compose, rebuilds the app image, recreates changed services, waits for application health, checks public `/health` and `/docs` over HTTPS, and records the successful commit in `/opt/stayflow/.deployed-sha`. The workflow uses a concurrency lock so deployments cannot overlap. Optional environment protection rules can require approval before the `production` job starts.
+For defense in depth, configure the `production` environment with `JackyLN` as a required reviewer. If your repository has other administrators, disable administrator bypass where GitHub offers that setting. Do not enable “prevent self-review” when you are the only permitted deployer, because that would prevent you from approving your own deployment.
+
+Each deployment validates Compose, rebuilds the app image, recreates changed services, waits for application health, checks public `/health` and `/docs` over HTTPS, and records the successful commit in `/opt/stayflow/.deployed-sha`. The workflow uses a concurrency lock so deployments cannot overlap.
