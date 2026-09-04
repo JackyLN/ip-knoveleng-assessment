@@ -20,3 +20,18 @@
 		format json
 	}
 }
+
+litetradingbot.jackylenghia.com {
+	encode zstd gzip
+
+	request_body {
+		max_size 32KB
+	}
+
+	reverse_proxy litetradingbot-app:8000
+
+	log {
+		output stdout
+		format json
+	}
+}
